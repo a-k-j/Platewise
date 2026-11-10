@@ -1,6 +1,6 @@
 import { Copy, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
 import type { EntryStatus, MealEntry } from '../../types'
-import { entryCalories, entryCarbohydrates, entryFat, entryProtein } from '../../lib/calculations'
+import { entryCalories, entryCarbohydrates, entryFat, entryFibre, entryProtein } from '../../lib/calculations'
 import { formatCalories, formatMacro, formatQuantity } from '../../lib/format'
 import { cn } from '../../lib/cn'
 import { ActionMenu } from '../ui/ActionMenu'
@@ -20,6 +20,7 @@ export function MealEntryRow({ entry, onEdit, onStatusChange, onDuplicate, onRem
     entry.proteinSnapshot != null ? `P ${formatMacro(entryProtein(entry))}g` : null,
     entry.carbohydratesSnapshot != null ? `C ${formatMacro(entryCarbohydrates(entry))}g` : null,
     entry.fatSnapshot != null ? `F ${formatMacro(entryFat(entry))}g` : null,
+    entry.fibreSnapshot != null ? `Fib ${formatMacro(entryFibre(entry))}g` : null,
   ].filter(Boolean)
 
   return (

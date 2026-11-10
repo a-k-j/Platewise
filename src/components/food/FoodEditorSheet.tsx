@@ -22,6 +22,7 @@ interface FoodFormState {
   protein: string
   carbohydrates: string
   fat: string
+  fibre: string
   servingDescription: string
   servingQuantity: string
   nutritionBasis: NutritionBasis
@@ -37,6 +38,7 @@ function emptyForm(): FoodFormState {
     protein: '',
     carbohydrates: '',
     fat: '',
+    fibre: '',
     servingDescription: '1 serving',
     servingQuantity: '1',
     nutritionBasis: 'per_serving',
@@ -53,6 +55,7 @@ function formFromFood(food: FoodItem): FoodFormState {
     protein: food.protein == null ? '' : String(food.protein),
     carbohydrates: food.carbohydrates == null ? '' : String(food.carbohydrates),
     fat: food.fat == null ? '' : String(food.fat),
+    fibre: food.fibre == null ? '' : String(food.fibre),
     servingDescription: food.servingDescription,
     servingQuantity: String(food.servingQuantity),
     nutritionBasis: food.nutritionBasis,
@@ -93,6 +96,7 @@ export function FoodEditorSheet({ open, food, onClose }: FoodEditorSheetProps) {
       protein: optionalNumber(form.protein),
       carbohydrates: optionalNumber(form.carbohydrates),
       fat: optionalNumber(form.fat),
+      fibre: optionalNumber(form.fibre),
       servingDescription: form.servingDescription,
       servingQuantity: Number(form.servingQuantity),
       nutritionBasis: form.nutritionBasis,
@@ -235,20 +239,21 @@ export function FoodEditorSheet({ open, food, onClose }: FoodEditorSheetProps) {
           </div>
         </div>
 
+        <Field label={caloriesLabel} htmlFor="food-calories" error={errors.calories}>
+          <input
+            id="food-calories"
+            type="number"
+            min="0"
+            step="1"
+            inputMode="decimal"
+            value={form.calories}
+            onChange={(event) => setForm((current) => ({ ...current, calories: event.target.value }))}
+            className="input"
+            placeholder="0"
+          />
+        </Field>
+
         <div className="grid grid-cols-2 gap-3">
-          <Field label={caloriesLabel} htmlFor="food-calories" error={errors.calories}>
-            <input
-              id="food-calories"
-              type="number"
-              min="0"
-              step="1"
-              inputMode="decimal"
-              value={form.calories}
-              onChange={(event) => setForm((current) => ({ ...current, calories: event.target.value }))}
-              className="input"
-              placeholder="0"
-            />
-          </Field>
           <Field label="Protein (g)" htmlFor="food-protein" error={errors.protein}>
             <input
               id="food-protein"
@@ -286,6 +291,19 @@ export function FoodEditorSheet({ open, food, onClose }: FoodEditorSheetProps) {
               inputMode="decimal"
               value={form.fat}
               onChange={(event) => setForm((current) => ({ ...current, fat: event.target.value }))}
+              className="input"
+              placeholder="Optional"
+            />
+          </Field>
+          <Field label="Fibre (g)" htmlFor="food-fibre" error={errors.fibre}>
+            <input
+              id="food-fibre"
+              type="number"
+              min="0"
+              step="0.1"
+              inputMode="decimal"
+              value={form.fibre}
+              onChange={(event) => setForm((current) => ({ ...current, fibre: event.target.value }))}
               className="input"
               placeholder="Optional"
             />

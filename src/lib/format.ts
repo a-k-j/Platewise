@@ -17,9 +17,8 @@ export function formatQuantity(value: number): string {
   return formatNumber(value, 2)
 }
 
-export function formatWeight(weightKg: number, unit: 'kg' | 'lb'): string {
-  const converted = unit === 'lb' ? weightKg * 2.2046226218 : weightKg
-  return `${converted.toFixed(1)} ${unit}`
+export function formatWeight(weightKg: number): string {
+  return `${weightKg.toFixed(1)} kg`
 }
 
 export function formatSigned(value: number, digits = 1): string {

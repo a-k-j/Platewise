@@ -41,6 +41,7 @@ interface CustomState {
   protein: string
   carbohydrates: string
   fat: string
+  fibre: string
   servingDescription: string
   servingQuantity: string
   nutritionBasis: NutritionBasis
@@ -57,6 +58,7 @@ function createCustomState(): CustomState {
     protein: '',
     carbohydrates: '',
     fat: '',
+    fibre: '',
     servingDescription: '1 serving',
     servingQuantity: '1',
     nutritionBasis: 'per_serving',
@@ -182,6 +184,7 @@ export function AddFoodSheet({ open, onClose, date, initialMeal }: AddFoodSheetP
       protein: optionalNumber(custom.protein),
       carbohydrates: optionalNumber(custom.carbohydrates),
       fat: optionalNumber(custom.fat),
+      fibre: optionalNumber(custom.fibre),
       servingDescription: custom.servingDescription,
       servingQuantity: Number(custom.servingQuantity),
       nutritionBasis: custom.nutritionBasis,
@@ -385,12 +388,13 @@ export function AddFoodSheet({ open, onClose, date, initialMeal }: AddFoodSheetP
                           {food.category} · {food.servingDescription}
                           {food.nutritionBasis === 'per_100g' ? ' · per 100 g' : ''}
                         </p>
-                        {food.protein != null || food.carbohydrates != null || food.fat != null ? (
+                        {food.protein != null || food.carbohydrates != null || food.fat != null || food.fibre != null ? (
                           <p className="num mt-0.5 text-[10px] text-muted/80">
                             {[
                               food.protein != null ? `P ${formatMacro(food.protein)}g` : null,
                               food.carbohydrates != null ? `C ${formatMacro(food.carbohydrates)}g` : null,
                               food.fat != null ? `F ${formatMacro(food.fat)}g` : null,
+                              food.fibre != null ? `Fib ${formatMacro(food.fibre)}g` : null,
                             ]
                               .filter(Boolean)
                               .join(' · ')}
@@ -581,20 +585,21 @@ export function AddFoodSheet({ open, onClose, date, initialMeal }: AddFoodSheetP
             </div>
           </div>
 
+          <Field label="Calories" htmlFor="custom-calories" error={customErrors.calories}>
+            <input
+              id="custom-calories"
+              type="number"
+              min="0"
+              step="1"
+              inputMode="decimal"
+              value={custom.calories}
+              onChange={(event) => setCustom((current) => ({ ...current, calories: event.target.value }))}
+              placeholder="0"
+              className="input"
+            />
+          </Field>
+
           <div className="grid grid-cols-2 gap-3">
-            <Field label="Calories" htmlFor="custom-calories" error={customErrors.calories}>
-              <input
-                id="custom-calories"
-                type="number"
-                min="0"
-                step="1"
-                inputMode="decimal"
-                value={custom.calories}
-                onChange={(event) => setCustom((current) => ({ ...current, calories: event.target.value }))}
-                placeholder="0"
-                className="input"
-              />
-            </Field>
             <Field label="Protein (g)" htmlFor="custom-protein" error={customErrors.protein}>
               <input
                 id="custom-protein"
@@ -630,6 +635,19 @@ export function AddFoodSheet({ open, onClose, date, initialMeal }: AddFoodSheetP
                 inputMode="decimal"
                 value={custom.fat}
                 onChange={(event) => setCustom((current) => ({ ...current, fat: event.target.value }))}
+                placeholder="Optional"
+                className="input"
+              />
+            </Field>
+            <Field label="Fibre (g)" htmlFor="custom-fibre" error={customErrors.fibre}>
+              <input
+                id="custom-fibre"
+                type="number"
+                min="0"
+                step="0.1"
+                inputMode="decimal"
+                value={custom.fibre}
+                onChange={(event) => setCustom((current) => ({ ...current, fibre: event.target.value }))}
                 placeholder="Optional"
                 className="input"
               />

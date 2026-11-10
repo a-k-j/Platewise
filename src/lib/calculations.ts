@@ -6,7 +6,6 @@ import type {
   WeekStats,
   WeightEntry,
   WeightWeekSummary,
-  WeightUnit,
 } from '../types'
 import { addDays, parseDateKey } from './dates'
 
@@ -24,6 +23,10 @@ export function entryCarbohydrates(entry: MealEntry): number {
 
 export function entryFat(entry: MealEntry): number {
   return Math.max(0, entry.quantity * (entry.fatSnapshot ?? 0))
+}
+
+export function entryFibre(entry: MealEntry): number {
+  return Math.max(0, entry.quantity * (entry.fibreSnapshot ?? 0))
 }
 
 export function summarizeEntries(entries: MealEntry[], target: number): CalorieSummary {
@@ -183,14 +186,6 @@ export function getWeightWeekSummary(
   return { weekEntries, latestOverall, latestInWeek, weeklyChangeKg, baseline }
 }
 
-export function kgToUnit(weightKg: number, unit: WeightUnit): number {
-  return unit === 'lb' ? weightKg * 2.2046226218 : weightKg
-}
-
-export function unitToKg(weight: number, unit: WeightUnit): number {
-  return unit === 'lb' ? weight / 2.2046226218 : weight
-}
-
 export function scaleFoodNutrition(
   food: Pick<FoodItem, 'calories' | 'protein' | 'carbohydrates' | 'fat'>,
   quantity: number,
@@ -269,14 +264,6 @@ export function compareDateKeys(a: string, b: string): number {
 
 export function weightEntrySort(a: WeightEntry, b: WeightEntry): number {
   return a.date.localeCompare(b.date)
-}
-
-export function formatWeightValue(weightKg: number, unit: WeightUnit): string {
-  return kgToUnit(weightKg, unit).toFixed(1)
-}
-
-export function parseWeightInput(value: number, unit: WeightUnit): number {
-  return unitToKg(value, unit)
 }
 
 export function daysBetweenInclusive(start: string, end: string): number {

@@ -18,6 +18,7 @@ export function FoodCard({ food, onAdd, onEdit, onDuplicate, onDelete, onToggleF
     food.protein != null ? `P ${formatMacro(food.protein)}g` : null,
     food.carbohydrates != null ? `C ${formatMacro(food.carbohydrates)}g` : null,
     food.fat != null ? `F ${formatMacro(food.fat)}g` : null,
+    food.fibre != null ? `Fib ${formatMacro(food.fibre)}g` : null,
   ].filter(Boolean)
 
   return (

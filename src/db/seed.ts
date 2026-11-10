@@ -3,7 +3,7 @@ import { isoNow } from '../lib/dates'
 
 const APPROX_NOTE = 'Approximate reference value — edit to match your brand or preparation.'
 
-type StarterFood = Omit<FoodItem, 'id' | 'createdAt' | 'updatedAt'>
+type StarterFood = Omit<FoodItem, 'id' | 'createdAt' | 'updatedAt' | 'fibre'>
 
 export const STARTER_FOODS: StarterFood[] = [
   {
@@ -442,7 +442,6 @@ export function createDefaultSettings(): AppSettings {
     id: 'app',
     dailyCalorieTarget: 1800,
     proteinTarget: null,
-    weightUnit: 'kg',
     weekStartsOn: 1,
     theme: 'system',
     updatedAt: isoNow(),
@@ -453,6 +452,7 @@ export function buildStarterFoodRecords(): FoodItem[] {
   const now = isoNow()
   return STARTER_FOODS.map((food) => ({
     ...food,
+    fibre: null,
     createdAt: now,
     updatedAt: now,
   }))

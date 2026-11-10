@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import { CalendarDays, Loader2, Scale } from 'lucide-react'
-import type { WeightEntry, WeightUnit } from '../../types'
+import type { WeightEntry } from '../../types'
 import { todayKey } from '../../lib/dates'
-import { kgToUnit, unitToKg } from '../../lib/calculations'
 import { validateWeightDraft, hasErrors, type ValidationErrors } from '../../lib/validation'
 import { updateWeightEntry, upsertWeightEntry } from '../../services/weightService'
 import { Sheet } from '../ui/Sheet'
@@ -12,11 +11,10 @@ import { useToast } from '../ui/ToastProvider'
 interface WeightEditorSheetProps {
   open: boolean
   entry: WeightEntry | null
-  unit: WeightUnit
   onClose: () => void
 }
 
-export function WeightEditorSheet({ open, entry, unit, onClose }: WeightEditorSheetProps) {
+export function WeightEditorSheet({ open, entry, onClose }: WeightEditorSheetProps) {
   const { toast } = useToast()
   const [date, setDate] = useState(todayKey())
   const [weight, setWeight] = useState('')
@@ -27,14 +25,14 @@ export function WeightEditorSheet({ open, entry, unit, onClose }: WeightEditorSh
   useEffect(() => {
     if (!open) return
     setDate(entry?.date ?? todayKey())
-    setWeight(entry ? kgToUnit(entry.weightKg, unit).toFixed(1) : '')
+    setWeight(entry ? entry.weightKg.toFixed(1) : '')
     setNotes(entry?.notes ?? '')
     setErrors({})
     setSaving(false)
-  }, [open, entry, unit])
+  }, [open, entry])
 
   const handleSave = async () => {
-    const weightKg = unitToKg(Number(weight), unit)
+    const weightKg = Number(weight)
     const draft = { date, weightKg, notes }
     const validation = validateWeightDraft(draft)
     setErrors(validation)
@@ -89,7 +87,7 @@ export function WeightEditorSheet({ open, entry, unit, onClose }: WeightEditorSh
             />
           </div>
         </Field>
-        <Field label={`Weight (${unit})`} htmlFor="weight-value" error={errors.weightKg}>
+        <Field label="Weight (kg)" htmlFor="weight-value" error={errors.weightKg}>
           <div className="relative">
             <input
               id="weight-value"
@@ -100,10 +98,10 @@ export function WeightEditorSheet({ open, entry, unit, onClose }: WeightEditorSh
               value={weight}
               onChange={(event) => setWeight(event.target.value)}
               className="input pr-12"
-              placeholder={unit === 'kg' ? 'e.g. 72.5' : 'e.g. 160.0'}
+              placeholder="e.g. 72.5"
             />
             <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-xs font-medium text-muted">
-              {unit}
+              kg
             </span>
           </div>
         </Field>

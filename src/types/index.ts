@@ -4,8 +4,6 @@ export type EntryStatus = 'option' | 'planned' | 'eaten' | 'skipped'
 
 export type NutritionBasis = 'per_serving' | 'per_100g'
 
-export type WeightUnit = 'kg' | 'lb'
-
 export type ThemePreference = 'light' | 'dark' | 'system'
 
 export interface FoodItem {
@@ -16,6 +14,7 @@ export interface FoodItem {
   protein: number | null
   carbohydrates: number | null
   fat: number | null
+  fibre: number | null
   servingDescription: string
   servingQuantity: number
   nutritionBasis: NutritionBasis
@@ -37,6 +36,7 @@ export interface MealEntry {
   proteinSnapshot: number | null
   carbohydratesSnapshot: number | null
   fatSnapshot: number | null
+  fibreSnapshot: number | null
   status: EntryStatus
   notes: string
   createdAt: string
@@ -56,7 +56,6 @@ export interface AppSettings {
   id: 'app'
   dailyCalorieTarget: number
   proteinTarget: number | null
-  weightUnit: WeightUnit
   weekStartsOn: number
   theme: ThemePreference
   updatedAt: string
@@ -71,6 +70,7 @@ export interface SavedMealItem {
   proteinSnapshot: number | null
   carbohydratesSnapshot: number | null
   fatSnapshot: number | null
+  fibreSnapshot: number | null
 }
 
 export interface SavedMeal {
@@ -95,6 +95,7 @@ export interface FoodItemInput {
   protein: number | null
   carbohydrates: number | null
   fat: number | null
+  fibre: number | null
   servingDescription: string
   servingQuantity: number
   nutritionBasis: NutritionBasis
@@ -113,6 +114,7 @@ export interface MealEntryDraft {
   protein: number | null
   carbohydrates: number | null
   fat: number | null
+  fibre: number | null
   status: EntryStatus
   notes: string
 }
@@ -126,7 +128,6 @@ export interface WeightEntryDraft {
 export interface SettingsInput {
   dailyCalorieTarget: number
   proteinTarget: number | null
-  weightUnit: WeightUnit
   weekStartsOn: number
   theme: ThemePreference
 }

@@ -19,11 +19,11 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import type { WeightEntry, WeightUnit } from '../../types'
+import type { WeightEntry } from '../../types'
 import { formatDayMonth, formatShortDate } from '../../lib/dates'
 import { formatWeight, formatSigned } from '../../lib/format'
 import { cn } from '../../lib/cn'
-import { getWeightWeekSummary, kgToUnit } from '../../lib/calculations'
+import { getWeightWeekSummary } from '../../lib/calculations'
 import { useWeightEntries } from '../../hooks/useWeights'
 import { deleteWeightEntry } from '../../services/weightService'
 import { EmptyState } from '../ui/EmptyState'
@@ -33,7 +33,6 @@ import { WeightEditorSheet } from './WeightEditorSheet'
 
 interface WeightSectionProps {
   dates: string[]
-  unit: WeightUnit
 }
 
 interface TrendPoint {
@@ -46,24 +45,23 @@ interface TrendPoint {
 interface WeightTooltipProps {
   active?: boolean
   payload?: { payload?: TrendPoint }[]
-  unit: WeightUnit
 }
 
-function WeightTooltip({ active, payload, unit }: WeightTooltipProps) {
+function WeightTooltip({ active, payload }: WeightTooltipProps) {
   const point = payload?.[0]?.payload
   if (!active || !point) return null
   return (
     <div className="rounded-xl border border-line bg-surface px-3 py-2 text-xs shadow-card">
       <p className="font-semibold text-ink">{formatShortDate(point.date)}</p>
       <p className="num mt-0.5 text-muted">
-        <span className="font-semibold text-ink">{point.weight.toFixed(1)}</span> {unit}
+        <span className="font-semibold text-ink">{point.weight.toFixed(1)}</span> kg
       </p>
       {point.notes ? <p className="mt-1 max-w-[180px] text-[10px] leading-snug text-muted">{point.notes}</p> : null}
     </div>
   )
 }
 
-export function WeightSection({ dates, unit }: WeightSectionProps) {
+export function WeightSection({ dates }: WeightSectionProps) {
   const { entries } = useWeightEntries()
   const { toast } = useToast()
   const [editorOpen, setEditorOpen] = useState(false)
@@ -84,10 +82,10 @@ export function WeightSection({ dates, unit }: WeightSectionProps) {
       entries.slice(-30).map((entry) => ({
         date: entry.date,
         label: formatDayMonth(entry.date),
-        weight: Number(kgToUnit(entry.weightKg, unit).toFixed(1)),
+        weight: Number(entry.weightKg.toFixed(1)),
         notes: entry.notes,
       })),
-    [entries, unit],
+    [entries],
   )
 
   const chartBounds = useMemo(() => {
@@ -148,7 +146,7 @@ export function WeightSection({ dates, unit }: WeightSectionProps) {
           <div className="mt-4 grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
             <div>
               <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                <p className="num text-3xl font-bold tracking-tight text-ink">{formatWeight(latest.weightKg, unit)}</p>
+                <p className="num text-3xl font-bold tracking-tight text-ink">{formatWeight(latest.weightKg)}</p>
                 <span className="text-[11px] font-medium text-muted">latest · {formatShortDate(latest.date)}</span>
               </div>
               {latestChangeKg != null ? (
@@ -160,7 +158,7 @@ export function WeightSection({ dates, unit }: WeightSectionProps) {
                   ) : (
                     <Minus className="h-3 w-3" />
                   )}
-                  {formatSigned(kgToUnit(latestChangeKg, unit))} {unit} since previous weigh-in
+                  {formatSigned(latestChangeKg)} kg since previous weigh-in
                 </p>
               ) : null}
             </div>
@@ -188,7 +186,7 @@ export function WeightSection({ dates, unit }: WeightSectionProps) {
               <div>
                 <p className="text-[9px] font-bold uppercase tracking-[0.08em] text-muted">This week</p>
                 <p className="num text-xs font-bold text-ink">
-                  {weeklyChangeKg == null ? 'No baseline' : `${formatSigned(kgToUnit(weeklyChangeKg, unit))} ${unit}`}
+                  {weeklyChangeKg == null ? 'No baseline' : `${formatSigned(weeklyChangeKg)} kg`}
                 </p>
               </div>
             </div>
@@ -222,7 +220,7 @@ export function WeightSection({ dates, unit }: WeightSectionProps) {
                       tick={{ fill: 'rgb(var(--muted))', fontSize: 10 }}
                       tickFormatter={(value: number) => value.toFixed(1)}
                     />
-                    <Tooltip content={<WeightTooltip unit={unit} />} />
+                    <Tooltip content={<WeightTooltip />} />
                     <Line
                       type="monotone"
                       dataKey="weight"
@@ -262,7 +260,7 @@ export function WeightSection({ dates, unit }: WeightSectionProps) {
                     </div>
                     {entry.notes ? <p className="truncate text-[10px] text-muted">{entry.notes}</p> : null}
                   </div>
-                  <p className="num shrink-0 text-xs font-bold text-ink">{formatWeight(entry.weightKg, unit)}</p>
+                  <p className="num shrink-0 text-xs font-bold text-ink">{formatWeight(entry.weightKg)}</p>
                   <div className="flex shrink-0 items-center">
                     <button
                       type="button"
@@ -303,7 +301,7 @@ export function WeightSection({ dates, unit }: WeightSectionProps) {
         </div>
       )}
 
-      <WeightEditorSheet open={editorOpen} entry={editingEntry} unit={unit} onClose={() => setEditorOpen(false)} />
+      <WeightEditorSheet open={editorOpen} entry={editingEntry} onClose={() => setEditorOpen(false)} />
 
       <ConfirmDialog
         open={pendingDelete !== null}

@@ -85,6 +85,7 @@ function validateFoodItem(raw: unknown, index: number): FoodItem {
     protein: asNullableNumber(item.protein, `Food item ${index + 1} protein`),
     carbohydrates: asNullableNumber(item.carbohydrates, `Food item ${index + 1} carbohydrates`),
     fat: asNullableNumber(item.fat, `Food item ${index + 1} fat`),
+    fibre: asNullableNumber(item.fibre, `Food item ${index + 1} fibre`),
     servingDescription: asString(item.servingDescription, `Food item ${index + 1} serving description`),
     servingQuantity: asPositive(item.servingQuantity, `Food item ${index + 1} serving quantity`),
     nutritionBasis: item.nutritionBasis,
@@ -119,6 +120,7 @@ function validateMealEntry(raw: unknown, index: number): MealEntry {
       `Meal entry ${index + 1} carbohydrates`,
     ),
     fatSnapshot: asNullableNumber(item.fatSnapshot, `Meal entry ${index + 1} fat`),
+    fibreSnapshot: asNullableNumber(item.fibreSnapshot, `Meal entry ${index + 1} fibre`),
     status: item.status,
     notes: asString(item.notes, `Meal entry ${index + 1} notes`, true),
     createdAt: asTimestamp(item.createdAt, `Meal entry ${index + 1} created date`),
@@ -169,6 +171,10 @@ function validateSavedMealItem(raw: unknown, mealIndex: number, itemIndex: numbe
       `Saved meal ${mealIndex + 1} item ${itemIndex + 1} carbohydrates`,
     ),
     fatSnapshot: asNullableNumber(item.fatSnapshot, `Saved meal ${mealIndex + 1} item ${itemIndex + 1} fat`),
+    fibreSnapshot: asNullableNumber(
+      item.fibreSnapshot,
+      `Saved meal ${mealIndex + 1} item ${itemIndex + 1} fibre`,
+    ),
   }
 }
 
@@ -193,7 +199,6 @@ function validateSavedMeal(raw: unknown, index: number): SavedMeal {
 function validateSettings(raw: unknown): AppSettings {
   const item = asRecord(raw, 'Settings')
   if (item.id !== 'app') throw new Error('Settings record is missing its app id.')
-  if (!['kg', 'lb'].includes(String(item.weightUnit))) throw new Error('Settings have an invalid weight unit.')
   if (!['light', 'dark', 'system'].includes(String(item.theme))) throw new Error('Settings have an invalid theme.')
   const weekStartsOn = asNumber(item.weekStartsOn, 'Settings week start')
   if (!Number.isInteger(weekStartsOn) || weekStartsOn < 0 || weekStartsOn > 6) {
@@ -203,7 +208,6 @@ function validateSettings(raw: unknown): AppSettings {
     id: 'app',
     dailyCalorieTarget: asPositive(item.dailyCalorieTarget, 'Settings daily target'),
     proteinTarget: asNullableNumber(item.proteinTarget, 'Settings protein target'),
-    weightUnit: item.weightUnit as AppSettings['weightUnit'],
     weekStartsOn,
     theme: item.theme as AppSettings['theme'],
     updatedAt: asTimestamp(item.updatedAt, 'Settings updated date'),

@@ -47,6 +47,7 @@ export function EntryEditorSheet({ entry, open, onClose }: EntryEditorSheetProps
     entry.proteinSnapshot != null ? `P ${formatMacro(safeQuantity * entry.proteinSnapshot)}g` : null,
     entry.carbohydratesSnapshot != null ? `C ${formatMacro(safeQuantity * entry.carbohydratesSnapshot)}g` : null,
     entry.fatSnapshot != null ? `F ${formatMacro(safeQuantity * entry.fatSnapshot)}g` : null,
+    entry.fibreSnapshot != null ? `Fib ${formatMacro(safeQuantity * entry.fibreSnapshot)}g` : null,
   ].filter(Boolean)
 
   const adjustQuantity = (delta: number) => {

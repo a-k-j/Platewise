@@ -28,7 +28,6 @@ export async function updateDailyTarget(dailyCalorieTarget: number): Promise<voi
   await updateSettings({
     dailyCalorieTarget,
     proteinTarget: current.proteinTarget,
-    weightUnit: current.weightUnit,
     weekStartsOn: current.weekStartsOn,
     theme: current.theme,
   })

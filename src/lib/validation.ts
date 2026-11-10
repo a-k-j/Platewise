@@ -35,6 +35,7 @@ export function validateFoodInput(input: FoodItemInput): ValidationErrors {
     errors.carbohydrates = 'Carbohydrates must be zero or more.'
   }
   if (input.fat != null && !isNonNegative(input.fat)) errors.fat = 'Fat must be zero or more.'
+  if (input.fibre != null && !isNonNegative(input.fibre)) errors.fibre = 'Fibre must be zero or more.'
   if (!input.servingDescription.trim()) errors.servingDescription = 'Describe one serving.'
   if (!isPositive(input.servingQuantity)) errors.servingQuantity = 'Serving size must be greater than zero.'
   if (!['per_serving', 'per_100g'].includes(input.nutritionBasis)) {
@@ -59,6 +60,7 @@ export function validateMealEntryDraft(input: MealEntryDraft): ValidationErrors 
     errors.carbohydrates = 'Carbohydrates must be zero or more.'
   }
   if (input.fat != null && !isNonNegative(input.fat)) errors.fat = 'Fat must be zero or more.'
+  if (input.fibre != null && !isNonNegative(input.fibre)) errors.fibre = 'Fibre must be zero or more.'
   if (!['option', 'planned', 'eaten', 'skipped'].includes(input.status)) errors.status = 'Choose a status.'
   return errors
 }
@@ -80,7 +82,6 @@ export function validateSettingsInput(input: SettingsInput): ValidationErrors {
   if (input.proteinTarget != null && !isNonNegative(input.proteinTarget)) {
     errors.proteinTarget = 'Protein target must be zero or more.'
   }
-  if (!['kg', 'lb'].includes(input.weightUnit)) errors.weightUnit = 'Choose a weight unit.'
   if (!Number.isInteger(input.weekStartsOn) || input.weekStartsOn < 0 || input.weekStartsOn > 6) {
     errors.weekStartsOn = 'Choose a valid week start day.'
   }

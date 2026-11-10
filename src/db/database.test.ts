@@ -41,6 +41,7 @@ describe('database initialization', () => {
       proteinSnapshot: null,
       carbohydratesSnapshot: null,
       fatSnapshot: null,
+      fibreSnapshot: null,
       status: 'eaten',
       notes: '',
       createdAt: now,

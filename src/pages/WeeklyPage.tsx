@@ -132,7 +132,7 @@ export function WeeklyPage() {
       <div className="mt-5 space-y-4">
         <WeeklyChart stats={stats} target={settings.dailyCalorieTarget} onSelectDay={openDay} />
         <WeeklyStats stats={stats} target={settings.dailyCalorieTarget} />
-        <WeightSection dates={dates} unit={settings.weightUnit} />
+        <WeightSection dates={dates} />
       </div>
     </div>
   )

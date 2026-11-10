@@ -21,7 +21,7 @@ import {
   Trash2,
   Upload,
 } from 'lucide-react'
-import type { SettingsInput, ThemePreference, WeightUnit } from '../types'
+import type { SettingsInput, ThemePreference } from '../types'
 import { getWeekDates, getWeekStartOptions, todayKey } from '../lib/dates'
 import { buildWeeklyCsv } from '../lib/csv'
 import { downloadCsv, downloadJson, readFileAsText } from '../lib/download'
@@ -48,7 +48,6 @@ import { useToast } from '../components/ui/ToastProvider'
 interface SettingsFormState {
   dailyCalorieTarget: string
   proteinTarget: string
-  weightUnit: WeightUnit
   weekStartsOn: string
   theme: ThemePreference
 }
@@ -57,7 +56,6 @@ function toFormState(settings: ReturnType<typeof useSettings>['settings']): Sett
   return {
     dailyCalorieTarget: String(settings.dailyCalorieTarget),
     proteinTarget: settings.proteinTarget == null ? '' : String(settings.proteinTarget),
-    weightUnit: settings.weightUnit,
     weekStartsOn: String(settings.weekStartsOn),
     theme: settings.theme,
   }
@@ -160,7 +158,6 @@ export function SettingsPage() {
     const input: SettingsInput = {
       dailyCalorieTarget: Number(form.dailyCalorieTarget),
       proteinTarget: form.proteinTarget.trim() === '' ? null : Number(form.proteinTarget),
-      weightUnit: form.weightUnit,
       weekStartsOn: Number(form.weekStartsOn),
       theme: form.theme,
     }
@@ -357,36 +354,22 @@ export function SettingsPage() {
           <SectionCard
             icon={Palette}
             title="Display & preferences"
-            description="Choose units, your week boundary, and how Platewise looks."
+            description="Choose your week boundary and how Platewise looks."
           >
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="Weight unit" htmlFor="setting-weight-unit">
-                <SegmentedControl<WeightUnit>
-                  value={form.weightUnit}
-                  onChange={(value) => update('weightUnit', value)}
-                  options={[
-                    { value: 'kg', label: 'Kilograms' },
-                    { value: 'lb', label: 'Pounds' },
-                  ]}
-                  ariaLabel="Weight unit"
-                />
-              </Field>
-
-              <Field label="Week starts on" htmlFor="setting-week-start" hint="Used by the weekly chart and averages.">
-                <select
-                  id="setting-week-start"
-                  value={form.weekStartsOn}
-                  onChange={(event) => update('weekStartsOn', event.target.value)}
-                  className="select"
-                >
-                  {getWeekStartOptions().map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </Field>
-            </div>
+            <Field label="Week starts on" htmlFor="setting-week-start" hint="Used by the weekly chart and averages.">
+              <select
+                id="setting-week-start"
+                value={form.weekStartsOn}
+                onChange={(event) => update('weekStartsOn', event.target.value)}
+                className="select"
+              >
+                {getWeekStartOptions().map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </Field>
 
             <div className="mt-4">
               <p className="label">Theme</p>
@@ -577,7 +560,7 @@ export function SettingsPage() {
                 <div className="mt-3 flex flex-wrap gap-2 text-[10px] font-semibold text-muted">
                   <span className="pill bg-surface-2">
                     <Scale className="h-3 w-3" />
-                    Weight in {form.weightUnit}
+                    Weight in kg
                   </span>
                   <span className="pill bg-surface-2">
                     <Flame className="h-3 w-3" />

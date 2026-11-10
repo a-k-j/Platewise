@@ -28,7 +28,7 @@ Plan meals as options, promote them to planned, mark what you actually ate, and 
 - Search by name, category, or notes.
 - Category filters, favourites filter, and recently used foods.
 - Add, edit, duplicate, favourite, and delete foods.
-- Nutrition per serving or per 100 g, with optional protein, carbohydrate, and fat values.
+- Nutrition per serving or per 100 g, with optional protein, carbohydrate, fat, and fibre values.
 - 33 seeded approximate Indian vegetarian foods to start from.
 - Meal entries store a **nutrition snapshot**, so editing or deleting a food never changes historical calories.
 
@@ -39,13 +39,14 @@ Plan meals as options, promote them to planned, mark what you actually ate, and 
 - Click a bar to open that day on the Today page.
 - Daily average, tracked days, days within target, week total, highest/lowest day, and a short written summary.
 - Untracked days are excluded from averages and target comparisons instead of being treated as zero-calorie days.
-- Weight tracking with kg/lb display, trend chart, weekly change, history, edit, and delete.
+- Weight tracking in kilograms, with a trend chart, weekly change, history, edit, and delete.
 - Weight change compares the latest weigh-in in the week with the latest weigh-in before the week, falling back to the first/last weigh-in inside the week.
 
 ### Settings and data
 
 - Daily calorie target and optional protein target.
-- Weight unit (kg/lb), week start day, and light/dark/system theme.
+- Weight is always recorded and displayed in kilograms.
+- Week start day and light/dark/system theme.
 - Full JSON backup export and validated JSON restore.
 - One-week CSV export with per-day eaten, planned, projected, target, tracked flag, and weight.
 - Clear-all confirmation that removes user data and restores starter foods and default settings.
@@ -148,7 +149,7 @@ platewise/
 - **Projected** = Eaten + Planned.
 - The snack/treat budget is based on what remains after projected calories, so it shows what can still be added without exceeding the target.
 
-Food nutrition is multiplied by entry quantity. All nutrition is stored as a snapshot on the meal entry, so later food edits do not rewrite history.
+Food nutrition is multiplied by entry quantity. All nutrition is stored as a snapshot on the meal entry — including fibre when it is provided — so later food edits do not rewrite history.
 
 ## Data and privacy
 

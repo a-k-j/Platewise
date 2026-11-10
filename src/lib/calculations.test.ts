@@ -25,6 +25,7 @@ function makeEntry(overrides: Partial<MealEntry>): MealEntry {
     proteinSnapshot: 5,
     carbohydratesSnapshot: 10,
     fatSnapshot: 2,
+    fibreSnapshot: 3,
     status: 'eaten',
     notes: '',
     createdAt: '2026-11-09T08:00:00.000Z',

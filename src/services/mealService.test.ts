@@ -122,6 +122,7 @@ describe('food snapshot isolation', () => {
       protein: food.protein,
       carbohydrates: food.carbohydrates,
       fat: food.fat,
+      fibre: food.fibre,
       servingDescription: food.servingDescription,
       servingQuantity: food.servingQuantity,
       nutritionBasis: food.nutritionBasis,

@@ -26,6 +26,7 @@ async function seedUserData() {
     protein: 24,
     carbohydrates: 80,
     fat: 18,
+    fibre: 6,
     servingDescription: '1 thali',
     servingQuantity: 1,
     nutritionBasis: 'per_serving',
@@ -44,7 +45,6 @@ async function seedUserData() {
   await updateSettings({
     dailyCalorieTarget: 2100,
     proteinTarget: 90,
-    weightUnit: 'lb',
     weekStartsOn: 0,
     theme: 'dark',
   })
@@ -53,15 +53,18 @@ async function seedUserData() {
 
 describe('JSON backup export and restore', () => {
   it('round-trips all user data', async () => {
-    await seedUserData()
+    const foodId = await seedUserData()
     const payload = await exportBackup()
 
     expect(payload.app).toBe('platewise')
     expect(payload.version).toBe(1)
     expect(payload.data.foodItems).toHaveLength(34)
+    expect(payload.data.foodItems.find((item) => item.id === foodId)?.fibre).toBe(6)
     expect(payload.data.mealEntries).toHaveLength(1)
+    expect(payload.data.mealEntries[0].fibreSnapshot).toBe(6)
     expect(payload.data.weightEntries).toHaveLength(1)
     expect(payload.data.savedMeals).toHaveLength(1)
+    expect(payload.data.savedMeals[0].items[0].fibreSnapshot).toBe(6)
 
     await clearAllData()
     expect(await db.mealEntries.count()).toBe(0)
@@ -73,6 +76,8 @@ describe('JSON backup export and restore', () => {
     expect(await db.mealEntries.count()).toBe(1)
     expect(await db.weightEntries.count()).toBe(1)
     expect(await db.savedMeals.count()).toBe(1)
+    expect((await db.foodItems.get(foodId))?.fibre).toBe(6)
+    expect((await db.mealEntries.toArray())[0].fibreSnapshot).toBe(6)
     expect((await db.settings.get('app'))?.dailyCalorieTarget).toBe(2100)
     expect((await db.settings.get('app'))?.weekStartsOn).toBe(0)
   })

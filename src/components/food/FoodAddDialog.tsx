@@ -70,6 +70,7 @@ export function FoodAddDialog({ open, food, onClose, defaultMeal = 'lunch' }: Fo
     food.protein != null ? `P ${formatMacro(food.protein * safeQuantity)}g` : null,
     food.carbohydrates != null ? `C ${formatMacro(food.carbohydrates * safeQuantity)}g` : null,
     food.fat != null ? `F ${formatMacro(food.fat * safeQuantity)}g` : null,
+    food.fibre != null ? `Fib ${formatMacro(food.fibre * safeQuantity)}g` : null,
   ].filter(Boolean)
 
   return (
