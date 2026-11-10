@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0f766e" />
+    <meta
+      name="description"
+      content="Platewise is a private, offline-first calorie tracker and daily meal planner. Plan meals, track what you eat, and see what fits."
+    />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <title>Platewise — Calorie Tracker & Meal Planner</title>
+    <style>
+      #app-splash {
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        background: #f7f6f3;
+        color: #78716c;
+        font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      }
+      #app-splash img {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+      }
+      #app-splash p {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+      }
+      @media (prefers-color-scheme: dark) {
+        #app-splash {
+          background: #0c0a09;
+          color: #a8a29e;
+        }
+      }
+    </style>
+    <script>
+      // Apply the cached theme before paint to avoid a light flash.
+      try {
+        var theme = localStorage.getItem('platewise-theme') || 'system'
+        var dark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        if (dark) document.documentElement.classList.add('dark')
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root">
+      <div id="app-splash">
+        <img src="./favicon.svg" alt="" width="56" height="56" />
+        <p>Loading Platewise…</p>
+      </div>
+    </div>
+    <noscript>
+      <div style="padding: 24px; font-family: sans-serif; text-align: center">
+        Platewise needs JavaScript and local browser storage to run. Please enable JavaScript and reload.
+      </div>
+    </noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
